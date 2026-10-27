@@ -1,0 +1,68 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common'
+import { ApiResponse } from '@nestjs/swagger'
+import { ValidateResourcesIds } from 'src/common/decorators/validate-resources-ids.decorator'
+import { ValidateResourcesIdsInterceptor } from 'src/common/interceptors/validate-resources-ids/validate-resources-ids.interceptor'
+import { ProjectListItemDTO, ProjectRequestDTO } from './projects.dto'
+import { ProjectsService } from './projects.service'
+
+@Controller({
+  version: '1',
+  path: 'projects',
+})
+@UseInterceptors(ValidateResourcesIdsInterceptor)
+export class ProjectsController {
+  constructor(private readonly projectsService: ProjectsService) {}
+
+  @Get()
+  @ApiResponse({
+    type: [ProjectListItemDTO],
+  })
+  findAll() {
+    return this.projectsService.findAll()
+  }
+
+  @Get(':projectId')
+  @ApiResponse({
+    type: ProjectListItemDTO,
+  })
+  @ValidateResourcesIds()
+  async findOne(@Param('projectId', ParseUUIDPipe) id: string) {
+    return this.projectsService.findById(id)
+  }
+
+  @Post()
+  @ApiResponse({
+    type: ProjectListItemDTO,
+  })
+  create(@Body() data: ProjectRequestDTO) {
+    return this.projectsService.create(data)
+  }
+
+  @Put(':projectId')
+  @ApiResponse({
+    type: ProjectListItemDTO,
+  })
+  @ValidateResourcesIds()
+  async update(@Param('projectId', ParseUUIDPipe) id: string, @Body() data: ProjectRequestDTO) {
+    return this.projectsService.update(id, data)
+  }
+
+  @Delete(':projectId')
+  @ValidateResourcesIds()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('projectId', ParseUUIDPipe) id: string) {
+    return this.projectsService.remove(id)
+  }
+}
