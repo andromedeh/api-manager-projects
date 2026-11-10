@@ -1,0 +1,60 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseUUIDPipe,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common'
+import { ApiResponse } from '@nestjs/swagger'
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth/jwt-auth.guard'
+import { CreateUserDTO, UpdateUserDTO, UserFullDTO, UserListItemDTO } from './users.dto'
+import { UsersService } from './users.service'
+
+@Controller({
+  version: '1',
+  path: 'users',
+})
+@UseGuards(JwtAuthGuard)
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Get()
+  @ApiResponse({ type: [UserListItemDTO] })
+  findAll() {
+    return this.usersService.findAll()
+  }
+
+  @Get(':userId')
+  @ApiResponse({ type: UserFullDTO })
+  async findOne(@Param('userId', ParseUUIDPipe) userId: string) {
+    const user = await this.usersService.findById(userId)
+    if (!user) {
+      throw new Error('User not found')
+    }
+    return user
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() data: CreateUserDTO) {
+    return this.usersService.create(data)
+  }
+
+  @Put(':userId')
+  @HttpCode(HttpStatus.OK)
+  update(@Param('userId', ParseUUIDPipe) userId: string, @Body() data: UpdateUserDTO) {
+    return this.usersService.update(userId, data)
+  }
+
+  @Delete(':userId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('userId', ParseUUIDPipe) userId: string) {
+    await this.usersService.delete(userId)
+  }
+}

@@ -42,14 +42,3 @@ export class TaskDTO {
   @IsOptional()
   dueDate?: string
 }
-
-export class TaskListItemDTO {
-  @ApiProperty() id: string
-  @ApiProperty() title: string
-  @ApiProperty() description: string
-  @ApiProperty() status: TaskStatus
-  @ApiProperty() priority: TaskPriority
-  @ApiProperty({ format: 'date-time' }) dueDate: string
-  @ApiProperty({ format: 'date-time' }) createdAt: string
-  @ApiProperty({ format: 'date-time' }) updatedAt: string
-}
