@@ -14,6 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
+import { ApiPaginatedResponse } from 'src/common/decorators/swagger/api-paginated-response'
 import { ValidateResourcesIds } from 'src/common/decorators/validate-resources-ids.decorator'
 import { QueryPaginationDTO } from 'src/common/dtos/query-pagination.dto'
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth/jwt-auth.guard'
@@ -32,9 +33,7 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Get()
-  @ApiResponse({
-    type: [ProjectListItemDTO],
-  })
+  @ApiPaginatedResponse(ProjectListItemDTO)
   findAll(@Query() query?: QueryPaginationDTO) {
     return this.projectsService.findAll(query)
   }
