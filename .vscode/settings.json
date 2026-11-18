@@ -1,4 +1,6 @@
 {
+  "jest.jestCommandLine": "npm test --",
+  "jest.rootPath": ".",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "biomejs.biome",
   "editor.codeActionsOnSave": {
@@ -15,5 +17,5 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
-  },
+  }
 }
