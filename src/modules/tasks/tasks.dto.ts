@@ -54,7 +54,7 @@ class TaskBaseDTO {
   @ApiProperty({ nullable: true, required: false }) description?: string | null
   @ApiProperty({ enum: TaskStatus }) status: TaskStatus
   @ApiProperty({ enum: TaskPriority }) priority: TaskPriority
-  @ApiProperty({ nullable: true, required: false, format: 'date-time' }) dueDate?: string | null
+  @ApiProperty({ nullable: true, required: false, format: 'date-time' }) dueDate?: Date | null
   @ApiProperty({ format: 'date-time' }) createdAt: Date
   @ApiProperty({ format: 'date-time' }) updatedAt: Date
 }
@@ -88,5 +88,5 @@ export class TaskCommentDTO {
 export class TaskFullDTO extends TaskBaseDTO {
   @ApiProperty({ type: TaskAssigneeDTO, nullable: true, required: false })
   assignee?: TaskAssigneeDTO | null
-  @ApiProperty({ type: [TaskCommentDTO] }) comments: TaskCommentDTO
+  @ApiProperty({ type: [TaskCommentDTO] }) comments: TaskCommentDTO[]
 }
