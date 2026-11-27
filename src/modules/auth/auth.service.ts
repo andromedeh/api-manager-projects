@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
-import { JwtService } from 'node_modules/@nestjs/jwt/dist/jwt.service'
+import { JwtService } from '@nestjs/jwt'
 import { PrismaService } from 'src/prisma.service'
 import { MailService } from '../mail/mail.service'
 import { UsersService } from '../users/users.service'
